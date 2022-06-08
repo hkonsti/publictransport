@@ -87,7 +87,7 @@ export class Graph<Vertex, Edge extends PointTo<Vertex>> {
 		this.edges = new Edges();
     }
 
-	private vertexExists(id: Vertex): boolean {
+	protected vertexExists(id: Vertex): boolean {
 		return this.verticies.has(id);
 	}
 

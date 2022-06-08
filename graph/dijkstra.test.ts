@@ -16,8 +16,8 @@ test("Test Dijkstra's algorithm on TransportGraph", () => {
     t.addEdge(`${misereorId}:5`, {to: `${bushofId}:10`, transportation});
     t.addEdge(`${bushofId}:12`, {to: `${talbotId}:15`, transportation});
 
-    const path = Dijkstra.findShortestPath(t, `${misereorId}:1`, talbotId);
-    expect(path).toEqual(["1:1", "1:2", "1:3", "1:4", "1:5", "2:10", "2:11", "2:12", "3:15"]);
+    const path = Dijkstra.findShortestPath(t, `${misereorId}:0`, talbotId);
+    expect(path).toEqual(["1:0", "1:5", "2:10", "2:12", "3:15"]);
 });
 
 test("Test Dijkstra's algorithm when maxdepth is exceeded", () => {
@@ -34,7 +34,7 @@ test("Test Dijkstra's algorithm when maxdepth is exceeded", () => {
     const transportation = {name: "Bus1"};
     t.addEdge(`${misereorId}:5`, {to: `${bushofId}:10`, transportation});
 
-    expect(() => Dijkstra.findShortestPath(t, `${misereorId}:1`, talbotId))
+    expect(() => Dijkstra.findShortestPath(t, `${misereorId}:0`, talbotId, 1))
         .toThrow("Max depth exceeded. Couldn't find a route.");
 });
 
@@ -47,6 +47,6 @@ test("Test Dijkstra's algorithm when there is no route", () => {
     t.addTimeVertex(misereorId);
     t.addTimeVertex(talbotId);
 
-    const path = Dijkstra.findShortestPath(t, `${misereorId}:1`, talbotId);
+    const path = Dijkstra.findShortestPath(t, `${misereorId}:0`, talbotId);
     expect(path).toEqual([]);
 });

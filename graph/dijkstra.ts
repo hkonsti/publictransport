@@ -15,7 +15,7 @@ export class Dijkstra {
 
     static readonly MAXDEPTH = 15000;
 
-    static findShortestPath(g: TimeGraph<any>, startId: Id, goalId: number): Path {
+    static findShortestPath(g: TimeGraph<any>, startId: Id, goalId: number, maxdepth = Dijkstra.MAXDEPTH): Path {
         let currentDepth = 0;
 
         const dict = new Map<Id, Info>();
@@ -24,7 +24,7 @@ export class Dijkstra {
         dict.set(startId, {pred: undefined, distance: 0});
         priority.insert(0, startId);
         
-        while (currentDepth <= Dijkstra.MAXDEPTH && !priority.empty()) {
+        while (currentDepth <= maxdepth && !priority.empty()) {
             const current = priority.pop();
             const neighbors = g.getNeighbors(current!.elem);
 
@@ -48,7 +48,7 @@ export class Dijkstra {
             currentDepth++;
         }
 
-        if (currentDepth > Dijkstra.MAXDEPTH) {
+        if (currentDepth > maxdepth) {
             throw new Error("Max depth exceeded. Couldn't find a route.");
         }
 

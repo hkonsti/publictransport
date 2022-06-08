@@ -1,8 +1,6 @@
 import {Transportation, TransportGraph} from "./transportgraph";
 import type {Id} from "./timegraph";
 
-const MINUTES = 60 * 24 * 7; // Minutes in a week.
-
 test("Test transport graph", () => {
     const t = new TransportGraph();
 
@@ -10,7 +8,7 @@ test("Test transport graph", () => {
     t.addTimeVertex(2);
     t.addTimeVertex(3);
 
-    expect(t.getNumberOfVertices()).toBe(3*MINUTES);
+    expect(t.getNumberOfVertices()).toBe(3);
 
     const bus1: Transportation = {name: "1A"};
     const bus2: Transportation = {name: "2A"};
@@ -33,9 +31,9 @@ test("Test convertPath", () => {
     t.addEdge(`${misereorId}:5`, {to: `${bushofId}:10`, transportation});
     t.addEdge(`${bushofId}:12`, {to: `${talbotId}:15`, transportation});
 
-    let path: Id[] = ["1:1", "1:2", "1:3", "1:4", "1:5", "2:10", "2:11", "2:12", "3:15"];
+    let path: Id[] = ["1:0", "1:5", "2:10", "2:12", "3:15"];
     let converted = t.convertPath(path);
-    expect(converted[4]).toEqual({from: "1:5", to: "2:10", transport: transportation});
+    expect(converted[1]).toEqual({from: "1:5", to: "2:10", transport: transportation});
 
     path = [];
     converted = t.convertPath(path);
@@ -43,4 +41,24 @@ test("Test convertPath", () => {
 
     path = ["1:1", "1:0"];
     expect(() => t.convertPath(path)).toThrow("Edge doesn't exist when converting path.");
+});
+
+test("Benchmark", () => {
+    const t = new TransportGraph();
+
+    for (let i = 0; i < 10000; i++) {
+        t.addTimeVertex(i);
+    }
+
+    const transport: Transportation = {name: "1"};
+
+    for (let i = 0; i < 100000; i++) {
+        const randomLeft = Math.floor(Math.random() * 6138);
+        const randomRight = Math.floor(Math.random() * 6138);
+
+        const randomTimeLeft = Math.floor(Math.random() * 60 * 24 * 7);
+        const randomTimeRight = Math.floor(Math.random() * 60 * 24 * 7);
+
+        t.addEdge(`${randomLeft}:${randomTimeLeft}`, {to: `${randomRight}:${randomTimeRight}`, transportation: transport});
+    }
 });

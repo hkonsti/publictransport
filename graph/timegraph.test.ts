@@ -15,6 +15,6 @@ test("Add stops to a TransportGraph", () => {
     t.addTimeVertex(bushofId);
     t.addTimeVertex(talbotId);
 
-    expect(t.getNumberOfVertices()).toBe(MINUTES * 3);
-    expect(t.getNeighbors(`${misereorId}:${MINUTES - 1}`)[0]).toEqual(`${misereorId}:0`);
+    expect(t.getNumberOfVertices()).toBe(3);
+    expect(t.getNeighbors(`${misereorId}:${0}`)[0]).toEqual(`${misereorId}:${0}`);
 });
