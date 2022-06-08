@@ -1,0 +1,45 @@
+{
+	"compilerOptions": {
+		// Language and Environment
+		"useDefineForClassFields": true,
+		// Disallow JS
+		"allowJs": false,
+		// Modules
+		"baseUrl": ".",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		// Type-Checking
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"exactOptionalPropertyTypes": false,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"strict": true,
+		"useUnknownInCatchVariables": true,
+		// Emit
+		"alwaysStrict": true,
+		"importsNotUsedAsValues": "error",
+		"inlineSourceMap": true,
+		"inlineSources": true,
+		"newLine": "lf",
+		"noEmit": true,
+		// Projects
+		"incremental": true,
+		"tsBuildInfoFile": "./.tsbuildinfo",
+		// Output Formatting
+		"noErrorTruncation": true,
+		// Completeness
+		"skipDefaultLibCheck": true,
+		"skipLibCheck": false,
+
+		"target": "ES2022",
+		"esModuleInterop": true,
+	}
+}
