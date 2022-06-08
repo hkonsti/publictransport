@@ -1,14 +1,4 @@
-import {Graph} from "./graph";
-
-export class Vertex {
-	id: number;
-	name: string;
-
-	constructor(id: number, name: string) {
-		this.id = id;
-		this.name = name;
-	}
-}
+import {Graph, PointTo} from "./graph";
 
 // Fromat:   stopId : timeStamp
 export type Id = `${number}:${number}`
@@ -23,27 +13,25 @@ export type Id = `${number}:${number}`
  * Vertices for one location are always connected to the one in the
  * next minute to represent waiting at that location for one minute.
  */
-export class TimeGraph extends Graph<Id> {
-	private vertices: Map<Vertex, Boolean>;
+export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 	private timeSteps: number;
+	private createWaitingEdge: (id: Id) => Edge;
 
-	constructor(timeSteps: number) {
+	constructor(timeSteps: number, createWaitingEdge: (id: Id) => Edge) {
 		super();
 		this.timeSteps = timeSteps;
-		this.vertices = new Map<Vertex, Boolean>();
+		this.createWaitingEdge = createWaitingEdge;
 	}
 
-	addTimeVertex(vertex: Vertex) {
-		this.vertices.set(vertex, true);
-
-		this.addVertex(`${vertex.id}:${0}`);
+	addTimeVertex(id: number) {
+		this.addVertex(`${id}:${0}`);
 
 		for (let i = 1; i < this.timeSteps; i++) {
-			this.addVertex(`${vertex.id}:${i}`);
-			this.addEdge(`${vertex.id}:${i-1}`, `${vertex.id}:${i}`);
+			this.addVertex(`${id}:${i}`);
+			this.addEdge(`${id}:${i-1}`, this.createWaitingEdge(`${id}:${i}`));
 		}
 
-		this.addEdge(`${vertex.id}:${this.timeSteps-1}`, `${vertex.id}:${0}`);
+		this.addEdge(`${id}:${this.timeSteps-1}`, this.createWaitingEdge(`${id}:${0}`));
 	}
 
 	public static isSameVertexId(id: Id, number: number): boolean {

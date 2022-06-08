@@ -1,20 +1,19 @@
 import {Dijkstra} from "./dijkstra";
-import {Vertex, TimeGraph} from "./timegraph";
-
-const MINUTES = 60 * 24 * 7; // Minutes in a week.
+import {TransportGraph} from "./transportgraph";
 
 test("Add stops to a TransportGraph", () => {
-    const t = new TimeGraph(MINUTES);
+    const t = new TransportGraph();
 
     const misereorId = 1;
     const bushofId = 2;
     const talbotId = 3;
 
-    t.addTimeVertex(new Vertex(misereorId, "Misereor"));
-    t.addTimeVertex(new Vertex(bushofId, "Bushof"));
-    t.addTimeVertex(new Vertex(talbotId, "Talbot"));
+    t.addTimeVertex(misereorId);
+    t.addTimeVertex(bushofId);
+    t.addTimeVertex(talbotId);
 
-    t.addEdge(`${misereorId}:5`, `${bushofId}:10`);
+    const transportation = {name: "Bus1"};
+    t.addEdge(`${misereorId}:5`, {to: `${bushofId}:10`, transportation});
 
     console.log(Dijkstra.findShortestPath(t, `${misereorId}:1`, bushofId));
 });

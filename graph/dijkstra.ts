@@ -1,5 +1,6 @@
 import {TimeGraph, Id} from "./timegraph";
 import {PriorityQueue} from "./priorityqueue";
+import type {TransportGraph} from "./transportgraph";
 
 interface Info {
     pred: Id | undefined;
@@ -13,7 +14,7 @@ type Path = Id[];
  */
 export class Dijkstra {
 
-    static findShortestPath(g: TimeGraph, startId: Id, goalId: number) {
+    static findShortestPath(g: TransportGraph, startId: Id, goalId: number) {
         const found = false;
         const maxDepth = 10000;
 
