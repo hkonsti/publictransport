@@ -15,7 +15,7 @@ export class TransportGraph extends TimeGraph<Edge> {
     private static createWaitingEdge (id: Id): Edge {
         return {
             to: id,
-            transportation: this.waiting,
+            transportation: TransportGraph.waiting,
         };
     }
 
@@ -24,4 +24,37 @@ export class TransportGraph extends TimeGraph<Edge> {
         super(minutes, TransportGraph.createWaitingEdge)
     }
 
+    public convertPath(path: Id[]): void {
+        const res: {
+            from: Id,
+            to: Id,
+            transport: Transportation,
+        }[] = [];
+
+        if (path.length < 2) {
+            return;
+        }
+        
+        let pred = path[0]!;
+
+        for (let i = 1; i < path.length; i++) {
+            const curr = path[i]!;
+            const edge = this.getEdge(pred, curr);
+
+            if (!edge) {
+                throw new Error("Edge doesn't exist when converting path.");
+            }
+
+            res.push({
+                from: pred,
+                to: edge.to,
+                transport: edge.transportation,
+            });
+
+            pred = curr;
+        }
+        
+        console.log(res);
+
+    }
 }

@@ -52,6 +52,21 @@ class Edges<Vertex, Edge extends PointTo<Vertex>> {
 		return true;
 	}
 
+	public getEdge(from: Vertex, to: Vertex): Edge | undefined {
+		const edges = this.edges.get(from);
+		if (!edges) {
+			return undefined;
+		}
+
+		for (const e of edges) {
+			if (e.to === to)  {
+				return e;
+			}
+		}
+
+		return undefined;
+	}
+
 	public getNeighbors(id: Vertex): Vertex[] {
 		return PointTo.toArray(this.edges.get(id)).sort();
 	}
@@ -92,6 +107,10 @@ export class Graph<Vertex, Edge extends PointTo<Vertex>> {
 		}
 
 		return this.edges.addEdge(from, edge);
+	}
+
+	public getEdge(from: Vertex, to: Vertex): Edge | undefined {
+		return this.edges.getEdge(from, to);
 	}
 
 	public getVertices(): IterableIterator<Vertex> {

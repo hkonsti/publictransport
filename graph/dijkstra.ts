@@ -1,6 +1,5 @@
 import {TimeGraph, Id} from "./timegraph";
 import {PriorityQueue} from "./priorityqueue";
-import type {TransportGraph} from "./transportgraph";
 
 interface Info {
     pred: Id | undefined;
@@ -14,9 +13,10 @@ type Path = Id[];
  */
 export class Dijkstra {
 
-    static findShortestPath(g: TransportGraph, startId: Id, goalId: number) {
+    static readonly MAXDEPTH = 10000;
+
+    static findShortestPath(g: TimeGraph<any>, startId: Id, goalId: number): Path {
         const found = false;
-        const maxDepth = 10000;
 
         let currentDepth = 0;
 
@@ -26,7 +26,7 @@ export class Dijkstra {
         dict.set(startId, {pred: undefined, distance: 0});
         priority.insert(0, startId);
         
-        while (!found && currentDepth <= maxDepth && !priority.empty()) {
+        while (!found && currentDepth <= Dijkstra.MAXDEPTH && !priority.empty()) {
             const current = priority.pop();
             const neighbors = g.getNeighbors(current!.elem);
 
@@ -58,7 +58,7 @@ export class Dijkstra {
             currentDepth++;
         }
 
-        if (currentDepth > maxDepth) {
+        if (currentDepth > Dijkstra.MAXDEPTH) {
             throw new Error("Max depth exceeded. Couldn't find a route.");
         }
 
@@ -71,7 +71,7 @@ export class Dijkstra {
         let curr = res
 
         while (true) {
-            path.push(curr);
+            path.unshift(curr);
             const pred = dict.get(curr)!.pred;
             if (!pred) {
                 break;

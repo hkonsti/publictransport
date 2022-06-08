@@ -13,8 +13,6 @@ test("Test transport graph", () => {
 
     const bus1: Transportation = {name: "1A"};
     const bus2: Transportation = {name: "2A"};
-    t.addEdge(`${1}:1`, {to: `${2}:5`, transportation: bus1});
-    t.addEdge(`${2}:6`, {to: `${3}:25`, transportation: bus2});
-
-    expect(t.getNumberOfVertices()).toBe(3*MINUTES);
+    expect(t.addEdge(`${1}:1`, {to: `${2}:5`, transportation: bus1})).toBe(true);
+    expect(t.addEdge(`${2}:6`, {to: `${3}:25`, transportation: bus2})).toBe(true);
 });
