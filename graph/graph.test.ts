@@ -12,14 +12,14 @@ function convertIteratorToArray(iter: IterableIterator<any>, arr: readonly any[]
 }
 
 test("Create a Graph and test it's functions.", () => {
-    const g = new Graph<string, number>();
+    const g = new Graph<string>();
     expect(convertIteratorToArray(g.getVertices(), [])).toEqual(true);
 
     const verticies = ["0", "1", "2"] as const;
     const notExisting = "3" as const;
 
     for (const vertex of verticies) {
-        expect(g.addVertex(vertex, 1)).toBe(true);
+        expect(g.addVertex(vertex)).toBe(true);
     }
     expect(convertIteratorToArray(g.getVertices(), verticies)).toEqual(true);
 

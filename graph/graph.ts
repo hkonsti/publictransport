@@ -40,14 +40,14 @@ class Edges<Id> {
 /**
  * Implementation of a directed graph with unweighted edges.
  */
-export class Graph<Id, Vertex> {
-	private verticies: Map<Id, Vertex>;
+export class Graph<Id> {
+	private verticies: Map<Id, boolean>;
 	private vertexCount: number;
 
 	private edges: Edges<Id>;
 
     constructor() {
-        this.verticies = new Map<Id, Vertex>();
+        this.verticies = new Map<Id, boolean>();
 		this.vertexCount = 0;
 		this.edges = new Edges();
     }
@@ -56,12 +56,12 @@ export class Graph<Id, Vertex> {
 		return this.verticies.has(id);
 	}
 
-    public addVertex(id: Id, vertex: Vertex): boolean {
+    public addVertex(id: Id): boolean {
 		if (this.verticies.has(id)) {
 			return false;
 		}
 
-        this.verticies.set(id, vertex);
+        this.verticies.set(id, true);
 		this.vertexCount++;
 		return true;
     }
