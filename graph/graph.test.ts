@@ -1,4 +1,4 @@
-import {Graph} from "./graph";
+import {Graph, PointTo} from "./graph";
 
 function convertIteratorToArray(iter: IterableIterator<any>, arr: readonly any[]) {
     let i = 0;
@@ -34,4 +34,12 @@ test("Create a Graph and test it's functions.", () => {
     expect(g.getNeighbors(verticies[0])).toEqual([verticies[1], verticies[2]]);
     expect(g.getNeighbors(verticies[1])).toEqual([]);
     expect(() => g.getNeighbors(notExisting)).toThrow("Vertex doesn't exist in Graph.");
+
+    expect(g.getEdge(verticies[1], verticies[2])).toBe(undefined);
+});
+
+test("Create PointTo", () => {
+    const test = "test"
+    const pointTo = new PointTo<string>(test);
+    expect(pointTo.to).toBe(test);
 });

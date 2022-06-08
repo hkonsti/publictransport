@@ -24,7 +24,7 @@ export class TransportGraph extends TimeGraph<Edge> {
         super(minutes, TransportGraph.createWaitingEdge)
     }
 
-    public convertPath(path: Id[]): void {
+    public convertPath(path: Id[]) {
         const res: {
             from: Id,
             to: Id,
@@ -32,7 +32,7 @@ export class TransportGraph extends TimeGraph<Edge> {
         }[] = [];
 
         if (path.length < 2) {
-            return;
+            return res;
         }
         
         let pred = path[0]!;
@@ -54,7 +54,6 @@ export class TransportGraph extends TimeGraph<Edge> {
             pred = curr;
         }
         
-        console.log(res);
-
+        return res;
     }
 }

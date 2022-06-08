@@ -13,11 +13,9 @@ type Path = Id[];
  */
 export class Dijkstra {
 
-    static readonly MAXDEPTH = 10000;
+    static readonly MAXDEPTH = 15000;
 
     static findShortestPath(g: TimeGraph<any>, startId: Id, goalId: number): Path {
-        const found = false;
-
         let currentDepth = 0;
 
         const dict = new Map<Id, Info>();
@@ -26,7 +24,7 @@ export class Dijkstra {
         dict.set(startId, {pred: undefined, distance: 0});
         priority.insert(0, startId);
         
-        while (!found && currentDepth <= Dijkstra.MAXDEPTH && !priority.empty()) {
+        while (currentDepth <= Dijkstra.MAXDEPTH && !priority.empty()) {
             const current = priority.pop();
             const neighbors = g.getNeighbors(current!.elem);
 
@@ -36,14 +34,7 @@ export class Dijkstra {
                         pred: current!.elem,
                         distance: TimeGraph.getTimeDifference(startId, n)
                     });
-                } else {
-                    const distance = TimeGraph.getTimeDifference(startId, n)
-                    if (distance < dict.get(n)!.distance) {
-                        dict.set(n, {
-                            pred: current!.elem,
-                            distance: distance,
-                        });
-                    }
+                    priority.insert(dict.get(n)!.distance, n)
                 }
 
                 if (TimeGraph.isSameVertexId(n, goalId)) {
@@ -52,7 +43,6 @@ export class Dijkstra {
                     return Dijkstra.traceRoute(n, dict);
                 }
 
-                priority.insert(dict.get(n)!.distance, n)
             }
 
             currentDepth++;
