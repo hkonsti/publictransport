@@ -33,11 +33,6 @@ test("Lazy vertex creation edge cases", () => {
         .toThrow("Zero-Vertex doesn't exist.");
 });
 
-test("Disabled addVertex", () => {
-    const t = new TimeGraph<PointTo<Id>>(MINUTES, createWaitingEdge);
-    expect(() => t.addVertex(`${0}:${0}`)).toThrow("Unsupported operation.");
-});
-
 test("Benchmark", () => {
     const t = new TimeGraph<PointTo<Id>>(MINUTES, createWaitingEdge);
 

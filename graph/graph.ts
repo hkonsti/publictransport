@@ -123,7 +123,7 @@ export class Graph<Vertex, Edge extends PointTo<Vertex>> {
 
 	public getNeighbors(vertex: Vertex): Vertex[] {
 		if (!this.vertexExists(vertex)) {
-			throw new Error("Vertex doesn't exist in Graph.");
+			throw new Error("Vertex doesn't exist in Graph. Vertex: "+vertex);
 		}
 
 		return this.edges.getNeighbors(vertex);

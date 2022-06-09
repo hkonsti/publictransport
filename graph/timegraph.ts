@@ -88,7 +88,7 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		this.times.addAndGetPosition(`${id}:${0}`);
 	}
 
-	private lazyCreateVertex(id: Id) {
+	override addVertex(id: Id) {
 		const split = id.split(":");
 		const locationId = parseInt(split[0]!);
 		const timeStamp = parseInt(split[1]!);
@@ -109,22 +109,20 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		const edge = this.getEdge(left, right);
 		edge!.to = id;
 		this.addEdge(id, this.createWaitingEdge(right));
+
+		return true;
 	}
 
 	override addEdge(id: Id, edge: Edge) {
 		if (!this.vertexExists(id)) {
-			this.lazyCreateVertex(id);
+			this.addVertex(id);
 		}
 
 		if (!this.vertexExists(edge.to)) {
-			this.lazyCreateVertex(edge.to);
+			this.addVertex(edge.to);
 		}
 
 		return super.addEdge(id, edge);
-	}
-
-	override addVertex(_: Id): boolean {
-		throw new Error("Unsupported operation.");
 	}
 
 	public static isSameVertexId(id: Id, number: number): boolean {
