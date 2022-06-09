@@ -83,7 +83,7 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 	}
 
 	addTimeVertex(id: number) {
-		this.addVertex(`${id}:${0}`);
+		super.addVertex(`${id}:${0}`);
 		this.addEdge(`${id}:${0}`, this.createWaitingEdge(`${id}:${0}`));
 		this.times.addAndGetPosition(`${id}:${0}`);
 	}
@@ -97,7 +97,6 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 			throw new Error("Timestamp is out of range.");
 		}
 
-		// Should always exist.
 		const zeroLocation: Id = `${locationId}:${0}`;
 		if (!this.vertexExists(zeroLocation)) {
 			throw new Error("Zero-Vertex doesn't exist.");
@@ -105,14 +104,10 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 
 		const [left, right] = this.times.addAndGetPosition(id);
 
-		this.addVertex(id);
+		super.addVertex(id);
 
 		const edge = this.getEdge(left, right);
-		if (!edge) {
-			throw new Error(`Edge doesn't exist. Left: ${left}, Right: ${right}`);
-		}
-
-		edge.to = id;
+		edge!.to = id;
 		this.addEdge(id, this.createWaitingEdge(right));
 	}
 
@@ -126,6 +121,10 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		}
 
 		return super.addEdge(id, edge);
+	}
+
+	override addVertex(_: Id): boolean {
+		throw new Error("Unsupported operation.");
 	}
 
 	public static isSameVertexId(id: Id, number: number): boolean {

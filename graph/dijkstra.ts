@@ -38,13 +38,11 @@ export class Dijkstra {
                 }
 
                 if (TimeGraph.isSameVertexId(n, goalId)) {
-                    
+
                     // Reached goal
                     return Dijkstra.traceRoute(n, dict);
                 }
-
             }
-
             currentDepth++;
         }
 
@@ -52,7 +50,6 @@ export class Dijkstra {
             throw new Error("Max depth exceeded. Couldn't find a route.");
         }
 
-        // No path found.
         return [];
     }
 

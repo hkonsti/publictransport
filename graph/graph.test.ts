@@ -26,6 +26,7 @@ test("Create a Graph and test it's functions.", () => {
 
     expect(g.addEdge(verticies[0], {to: verticies[1]})).toBe(true);
     expect(g.addEdge(verticies[0], {to: verticies[2]})).toBe(true);
+    expect(g.addEdge(verticies[2], {to: verticies[1]})).toBe(true);
 
     expect(g.addEdge(verticies[0], {to: verticies[1]})).toBe(false); // exists already
     expect(g.addEdge(verticies[0], {to: notExisting})).toBe(false);
@@ -36,6 +37,7 @@ test("Create a Graph and test it's functions.", () => {
     expect(() => g.getNeighbors(notExisting)).toThrow("Vertex doesn't exist in Graph.");
 
     expect(g.getEdge(verticies[1], verticies[2])).toBe(undefined);
+    expect(g.getEdge(verticies[2], verticies[0])).toBe(undefined);
 });
 
 test("Create PointTo", () => {

@@ -18,3 +18,40 @@ test("Add stops to a TransportGraph", () => {
     expect(t.getNumberOfVertices()).toBe(3);
     expect(t.getNeighbors(`${misereorId}:${0}`)[0]).toEqual(`${misereorId}:${0}`);
 });
+
+test("Lazy vertex creation edge cases", () => {
+    const t = new TimeGraph<PointTo<Id>>(MINUTES, createWaitingEdge);
+    const misereorId = 1;
+    const bushofId = 2;
+
+    t.addTimeVertex(misereorId);
+
+    expect(() => t.addEdge(`${misereorId}:0`, {to: `${misereorId}:${MINUTES+1}`}))
+        .toThrow("Timestamp is out of range.");
+
+    expect(() => t.addEdge(`${misereorId}:0`, {to: `${bushofId}:${MINUTES-1}`}))
+        .toThrow("Zero-Vertex doesn't exist.");
+});
+
+test("Disabled addVertex", () => {
+    const t = new TimeGraph<PointTo<Id>>(MINUTES, createWaitingEdge);
+    expect(() => t.addVertex(`${0}:${0}`)).toThrow("Unsupported operation.");
+});
+
+test("Benchmark", () => {
+    const t = new TimeGraph<PointTo<Id>>(MINUTES, createWaitingEdge);
+
+    for (let i = 0; i < 10000; i++) {
+        t.addTimeVertex(i);
+    }
+
+    for (let i = 0; i < 100000; i++) {
+        const randomLeft = Math.floor(Math.random() * 10000);
+        const randomRight = Math.floor(Math.random() * 10000);
+
+        const randomTimeLeft = Math.floor(Math.random() * 60 * 24 * 7);
+        const randomTimeRight = Math.floor(Math.random() * 60 * 24 * 7);
+
+        t.addEdge(`${randomLeft}:${randomTimeLeft}`, {to: `${randomRight}:${randomTimeRight}`});
+    }
+});

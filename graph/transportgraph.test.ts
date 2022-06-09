@@ -42,23 +42,3 @@ test("Test convertPath", () => {
     path = ["1:1", "1:0"];
     expect(() => t.convertPath(path)).toThrow("Edge doesn't exist when converting path.");
 });
-
-test("Benchmark", () => {
-    const t = new TransportGraph();
-
-    for (let i = 0; i < 10000; i++) {
-        t.addTimeVertex(i);
-    }
-
-    const transport: Transportation = {name: "1"};
-
-    for (let i = 0; i < 100000; i++) {
-        const randomLeft = Math.floor(Math.random() * 6138);
-        const randomRight = Math.floor(Math.random() * 6138);
-
-        const randomTimeLeft = Math.floor(Math.random() * 60 * 24 * 7);
-        const randomTimeRight = Math.floor(Math.random() * 60 * 24 * 7);
-
-        t.addEdge(`${randomLeft}:${randomTimeLeft}`, {to: `${randomRight}:${randomTimeRight}`, transportation: transport});
-    }
-});
