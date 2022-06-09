@@ -1,14 +1,13 @@
 {
-	"name": "busnetz",
+	"name": "publictransport",
 	"version": "1.0.0",
-	"description": "Bus routes in Aachen",
+	"description": "Finding public transport connections with graphs",
 	"main": "index.js",
 	"scripts": {
 		"dev": "ts-node cmd/main.ts",
 		"test": "jest --coverage -i"
 	},
 	"author": "Konstantin Hohr",
-	"license": "ISC",
 	"devDependencies": {
 		"@types/jest": "^28.1.1",
 		"jest": "^28.1.1",
