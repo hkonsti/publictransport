@@ -1,0 +1,2 @@
+"stop_id","stop_code","stop_name","stop_desc","stop_lat","stop_lon","location_type","parent_station","wheelchair_boarding","platform_code"
+000000100101,"","Aachen, Bushof",,"50.777592000000","6.090817000000",0,,0,"H.1"
