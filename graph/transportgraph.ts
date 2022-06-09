@@ -12,7 +12,7 @@ export interface Edge extends PointTo<Id> {
 export class TransportGraph extends TimeGraph<Edge> {
 
     private static waiting: Transportation = {name: "waiting"};
-    private static createWaitingEdge (id: Id): Edge {
+    private static createWaitingEdge(id: Id): Edge {
         return {
             to: id,
             transportation: TransportGraph.waiting,
@@ -34,7 +34,7 @@ export class TransportGraph extends TimeGraph<Edge> {
         if (path.length < 2) {
             return res;
         }
-        
+
         let pred = path[0]!;
 
         for (let i = 1; i < path.length; i++) {
@@ -53,7 +53,7 @@ export class TransportGraph extends TimeGraph<Edge> {
 
             pred = curr;
         }
-        
+
         return res;
     }
 }

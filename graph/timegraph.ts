@@ -14,11 +14,11 @@ class Times {
 		const index = this.sortedInsert(locationId, parseInt(split[1]!));
 
 		const list = this.times.get(locationId)!;
-		let left = index-1;
+		let left = index - 1;
 		if (left < 0) {
-			left = list.length-1;
+			left = list.length - 1;
 		}
-		let right = index+1;
+		let right = index + 1;
 		if (right >= list.length) {
 			right = 0;
 		}
@@ -38,7 +38,7 @@ class Times {
 		}
 
 		const list = this.times.get(locationId)!;
-		
+
 		// Can be sped up with binary search.
 		let inserted = false;
 		let i = 0;
@@ -50,7 +50,7 @@ class Times {
 			i++;
 		}
 
-		return i-1;
+		return i - 1;
 	}
 }
 
@@ -71,7 +71,7 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 	/**
 	 *  Tracks which times have been created for which locations.
 	 * 	Array is sorted.
-	 */ 
+	 */
 	private times: Times;
 
 	constructor(timeSteps: number, createWaitingEdge: (id: Id) => Edge) {

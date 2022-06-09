@@ -7,7 +7,7 @@ interface PriorityQueueElem<T> {
  * Priority Queue where lower number equals to higher priority.
  * 
  * We could use a Heap here for potential speed up.
- */ 
+ */
 export class PriorityQueue<T> {
 
     private list: PriorityQueueElem<T>[] = [];

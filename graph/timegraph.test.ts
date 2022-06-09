@@ -26,10 +26,10 @@ test("Lazy vertex creation edge cases", () => {
 
     t.addTimeVertex(misereorId);
 
-    expect(() => t.addEdge(`${misereorId}:0`, {to: `${misereorId}:${MINUTES+1}`}))
+    expect(() => t.addEdge(`${misereorId}:0`, {to: `${misereorId}:${MINUTES + 1}`}))
         .toThrow("Timestamp is out of range.");
 
-    expect(() => t.addEdge(`${misereorId}:0`, {to: `${bushofId}:${MINUTES-1}`}))
+    expect(() => t.addEdge(`${misereorId}:0`, {to: `${bushofId}:${MINUTES - 1}`}))
         .toThrow("Zero-Vertex doesn't exist.");
 });
 

@@ -23,7 +23,7 @@ export class Dijkstra {
 
         dict.set(startId, {pred: undefined, distance: 0});
         priority.insert(0, startId);
-        
+
         while (currentDepth <= maxdepth && !priority.empty()) {
             const current = priority.pop();
             const neighbors = g.getNeighbors(current!.elem);

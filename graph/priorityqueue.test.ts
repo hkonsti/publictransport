@@ -10,9 +10,9 @@ test("PriorityQueue", () => {
     p.insert(3, "E");
 
     const list = [];
-    while(!p.empty()) {
+    while (!p.empty()) {
         list.push(p.pop()?.elem);
     }
 
-    expect(list).toEqual(["A","B","C","D","E"]);
+    expect(list).toEqual(["A", "B", "C", "D", "E"]);
 });

@@ -44,7 +44,7 @@ class Edges<Vertex, Edge extends PointTo<Vertex>> {
 			return false;
 		}
 
-		if (!this.edges.has(from)){
+		if (!this.edges.has(from)) {
 			this.edges.set(from, []);
 		}
 
@@ -59,7 +59,7 @@ class Edges<Vertex, Edge extends PointTo<Vertex>> {
 		}
 
 		for (const e of edges) {
-			if (e.to === to)  {
+			if (e.to === to) {
 				return e;
 			}
 		}
@@ -81,28 +81,28 @@ export class Graph<Vertex, Edge extends PointTo<Vertex>> {
 
 	private edges: Edges<Vertex, Edge>;
 
-    constructor() {
-        this.verticies = new Map<Vertex, boolean>();
+	constructor() {
+		this.verticies = new Map<Vertex, boolean>();
 		this.vertexCount = 0;
 		this.edges = new Edges();
-    }
+	}
 
 	protected vertexExists(id: Vertex): boolean {
 		return this.verticies.has(id);
 	}
 
-    public addVertex(id: Vertex): boolean {
+	public addVertex(id: Vertex): boolean {
 		if (this.verticies.has(id)) {
 			return false;
 		}
 
-        this.verticies.set(id, true);
+		this.verticies.set(id, true);
 		this.vertexCount++;
 		return true;
-    }
+	}
 
 	public addEdge(from: Vertex, edge: Edge): boolean {
-		if (!this.vertexExists(from) || !this.vertexExists(edge.to))  {
+		if (!this.vertexExists(from) || !this.vertexExists(edge.to)) {
 			return false;
 		}
 
