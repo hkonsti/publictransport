@@ -5,15 +5,15 @@ export interface Stop {
 }
 
 export interface Route {
-    id: number;
-    name: number; // Using short name
+    id: string;
+    name: string; // Using short name
 }
 
 export interface StopTime {
     tripId: number;
     stopId: number;
-    arrival: number;
-    departure: number;
+    arrival: string;
+    departure: string;
 }
 
 export interface Calendar {

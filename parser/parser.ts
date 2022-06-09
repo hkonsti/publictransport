@@ -1,5 +1,5 @@
 import { Reader } from "./reader";
-import type {Calendar, Stop, Trip} from "./schema";
+import type {Calendar, Route, Stop, StopTime, Trip} from "./schema";
 
 export class Parser {
 
@@ -29,6 +29,26 @@ export class Parser {
      */
     public static async readStops(path: string, callback: (stop: Stop) => void): Promise<void> {
         await Parser.readIntoSchema<Stop>(path, callback, Parser.convertLineToStop);
+    }
+
+    private static convertLineToStopTime(split: string[]): StopTime {
+        if (split.length < 8) {
+            throw Parser.invalidFileFormatError();
+        }
+
+        return {
+            tripId: parseInt(split[0]!),
+            stopId: parseInt(split[3]!),
+            arrival: split[1]!,
+            departure: split[2]!,
+        }
+    }
+
+    /**
+     * Converts each line of the provided file into a StopTime object and calls the callback with it.
+     */
+    public static async readStopTimes(path: string, callback: (stopTime: StopTime) => void): Promise<void> {
+        await Parser.readIntoSchema<StopTime>(path, callback, Parser.convertLineToStopTime);
     }
 
     private static convertLineToCalendar(split: string[]): Calendar {
@@ -72,5 +92,23 @@ export class Parser {
      */
     public static async readTrips(path: string, callback: (entry: Trip) => void): Promise<void> {
         return Parser.readIntoSchema<Trip>(path, callback, Parser.convertLineToTrip);
+    }
+
+    private static convertLineToRoute(split: string[]): Route {
+        if (split.length < 8) {
+            throw Parser.invalidFileFormatError();
+        }
+
+        return {
+            id: split[0]!,
+            name: split[2]!,
+        };
+    }
+
+    /**
+     * Converts each line of the provided file into a Route object and calls the callback with it.
+     */
+    public static async readRoutes(path: string, callback: (entry: Route) => void): Promise<void> {
+        return Parser.readIntoSchema<Route>(path, callback, Parser.convertLineToRoute);
     }
 }

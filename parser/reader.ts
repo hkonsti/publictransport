@@ -51,8 +51,11 @@ export class Reader {
         return res;
     }
 
-    public static readLines(path: string, callback: (line: string[]) => void, skipFirst = true): Promise<void> {
+    public static async readLines(path: string, callback: (line: string[]) => void, skipFirst = true): Promise<void> {
+        await fs.promises.access(path);
         return new Promise((res, rej) => {
+
+
             const rl = readline.createInterface({
                 input: fs.createReadStream(path),
             });
