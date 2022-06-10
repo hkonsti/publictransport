@@ -67,8 +67,8 @@ class Edges<Vertex, Edge extends PointTo<Vertex>> {
 		return undefined;
 	}
 
-	public getNeighbors(id: Vertex): Vertex[] {
-		return PointTo.toArray(this.edges.get(id)).sort();
+	public getNeighbors(id: Vertex): Edge[] {
+		return (this.edges.get(id) || []);
 	}
 }
 
@@ -121,7 +121,7 @@ export class Graph<Vertex, Edge extends PointTo<Vertex>> {
 		return this.vertexCount;
 	}
 
-	public getNeighbors(vertex: Vertex): Vertex[] {
+	public getNeighbors(vertex: Vertex): Edge[] {
 		if (!this.vertexExists(vertex)) {
 			throw new Error("Vertex doesn't exist in Graph. Vertex: "+vertex);
 		}

@@ -1,4 +1,4 @@
-import {Transportation, TransportGraph} from "./transportgraph";
+import {Transportation, TransportationType, TransportGraph} from "./transportgraph";
 import type {Id} from "./timegraph";
 
 test("Test transport graph", () => {
@@ -10,8 +10,8 @@ test("Test transport graph", () => {
 
     expect(t.getNumberOfVertices()).toBe(3);
 
-    const bus1: Transportation = {name: "1A"};
-    const bus2: Transportation = {name: "2A"};
+    const bus1: Transportation = {name: "1A", type: TransportationType.TRANSPORT};
+    const bus2: Transportation = {name: "2A", type: TransportationType.TRANSPORT};
     expect(t.addEdge(`${1}:1`, {to: `${2}:5`, transportation: bus1})).toBe(true);
     expect(t.addEdge(`${2}:6`, {to: `${3}:25`, transportation: bus2})).toBe(true);
 });
@@ -27,7 +27,7 @@ test("Test convertPath", () => {
     t.addTimeVertex(bushofId);
     t.addTimeVertex(talbotId);
 
-    const transportation = {name: "Bus1"};
+    const transportation = {name: "Bus1", type: TransportationType.TRANSPORT};
     t.addEdge(`${misereorId}:5`, {to: `${bushofId}:10`, transportation});
     t.addEdge(`${bushofId}:12`, {to: `${talbotId}:15`, transportation});
 

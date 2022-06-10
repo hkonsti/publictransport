@@ -16,7 +16,7 @@ test("Add stops to a TransportGraph", () => {
     t.addTimeVertex(talbotId);
 
     expect(t.getNumberOfVertices()).toBe(3);
-    expect(t.getNeighbors(`${misereorId}:${0}`)[0]).toEqual(`${misereorId}:${0}`);
+    expect(t.getNeighbors(`${misereorId}:${0}`)[0]?.to).toEqual(`${misereorId}:${0}`);
 });
 
 test("Lazy vertex creation edge cases", () => {

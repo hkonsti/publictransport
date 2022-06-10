@@ -1,5 +1,5 @@
 import {Parser} from "../parser/parser";
-import {Transportation, TransportGraph} from "../graph/transportgraph";
+import {Transportation, TransportationType, TransportGraph} from "../graph/transportgraph";
 import {TimeConverter} from "../parser/timeconverter";
 import {Dijkstra} from "../graph/dijkstra";
 
@@ -60,6 +60,7 @@ async function main(): Promise<void> {
 
 		const transportation: Transportation = {
 			name: routeMap.get(trip!.route_id)!.name,
+			type: TransportationType.TRANSPORT,
 		}
 
 		const service_id = trip!.service_id;

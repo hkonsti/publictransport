@@ -1,5 +1,5 @@
 import {Dijkstra} from "./dijkstra";
-import {TransportGraph} from "./transportgraph";
+import {TransportationType, TransportGraph} from "./transportgraph";
 
 test("Test Dijkstra's algorithm on TransportGraph", () => {
     const t = new TransportGraph();
@@ -12,7 +12,7 @@ test("Test Dijkstra's algorithm on TransportGraph", () => {
     t.addTimeVertex(bushofId);
     t.addTimeVertex(talbotId);
 
-    const transportation = {name: "Bus1"};
+    const transportation = {name: "Bus1", type: TransportationType.TRANSPORT};
     t.addEdge(`${misereorId}:5`, {to: `${bushofId}:10`, transportation});
     t.addEdge(`${bushofId}:12`, {to: `${talbotId}:15`, transportation});
 
@@ -31,7 +31,7 @@ test("Test Dijkstra's algorithm when maxdepth is exceeded", () => {
     t.addTimeVertex(bushofId);
     t.addTimeVertex(talbotId);
 
-    const transportation = {name: "Bus1"};
+    const transportation = {name: "Bus1", type: TransportationType.TRANSPORT};
     t.addEdge(`${misereorId}:5`, {to: `${bushofId}:10`, transportation});
 
     expect(() => Dijkstra.findShortestPath(t, `${misereorId}:0`, talbotId, 1))
