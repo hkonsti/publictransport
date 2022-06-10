@@ -89,7 +89,6 @@ async function main(): Promise<void> {
 	const goal = 440590; // Cologne Main Station
 
 	t1 = Date.now();
-	t.addVertex(start);
 	const path = Dijkstra.findShortestPath(t, start, goal);
 	console.log(`Found connection in ${Date.now()-t1}ms`);
 	const converted = t.convertPath(path);

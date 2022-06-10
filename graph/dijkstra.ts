@@ -16,6 +16,7 @@ type Path = Id[];
 export class Dijkstra {
 
     static readonly MAXDEPTH = 15000;
+    static readonly CHANGE_LINES_TIME = 1; // Takes 1 min to hop off and on again at the same stop.
 
     static findShortestPath(g: TransportGraph, startId: Id, goalId: number, maxdepth = Dijkstra.MAXDEPTH): Path {
         let currentDepth = 0;
@@ -27,13 +28,31 @@ export class Dijkstra {
         priority.insert(0, {to: startId, transportation: {name: "waiting", type: TransportationType.WAITING}});
 
         while (currentDepth <= maxdepth && !priority.empty()) {
-            const current = priority.pop();
+            const current = priority.pop()!;
             const neighbors = g.getNeighbors(current!.elem.to);
 
-            for (const n of neighbors) {
+            for (let n of neighbors) {
+                /**
+                 * 4 Possible options:
+                 *  1. You are on a bus/train -> stay inside
+                 *  2. You are on a bus/train -> hop off
+                 *  3. You are at the stop -> keep waiting
+                 *  4. You are at the stop -> hop on something
+                 * 
+                 * Not possible: Hop off and immediately onto another bus. Waiting time necessary.
+                 */
+
+                const currentlyOnTransport = current.elem.transportation.type === TransportationType.TRANSPORT;
+                const stillOnTransport = n.transportation.type === TransportationType.TRANSPORT;
+                const sameTransportname = current.elem.transportation.name === n.transportation.name;
+
+                if (currentlyOnTransport && stillOnTransport && !sameTransportname) {
+                    continue;
+                }
+
                 if (!dict.has(n.to)) {
                     dict.set(n.to, {
-                        pred: current!.elem,
+                        pred: current.elem,
                         distance: TransportGraph.getTimeDifference(startId, n.to)
                     });
                     priority.insert(dict.get(n.to)!.distance, n)

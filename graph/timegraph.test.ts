@@ -17,6 +17,8 @@ test("Add stops to a TransportGraph", () => {
 
     expect(t.getNumberOfVertices()).toBe(3);
     expect(t.getNeighbors(`${misereorId}:${0}`)[0]?.to).toEqual(`${misereorId}:${0}`);
+    expect(t.getNeighbors(`${misereorId}:${1}`)[0]?.to).toEqual(`${misereorId}:${0}`);
+    expect(t.getNumberOfVertices()).toBe(4);
 });
 
 test("Lazy vertex creation edge cases", () => {

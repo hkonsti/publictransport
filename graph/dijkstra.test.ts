@@ -50,3 +50,35 @@ test("Test Dijkstra's algorithm when there is no route", () => {
     const path = Dijkstra.findShortestPath(t, `${misereorId}:0`, talbotId);
     expect(path).toEqual([]);
 });
+
+test("Test Dijkstra's algorithm with hopping on/ off rules", () => {
+    const t = new TransportGraph();
+
+    const stop1 = 1;
+    const stop2 = 2;
+    const stop3 = 3;
+
+    t.addTimeVertex(stop1);
+    t.addTimeVertex(stop2);
+    t.addTimeVertex(stop3);
+
+    const transportation = {name: "Bus1", type: TransportationType.TRANSPORT};
+    t.addEdge(`${stop1}:${0}`, {to: `${stop2}:${1}`, transportation});
+    t.addEdge(`${stop2}:${1}`, {to: `${stop3}:${2}`, transportation});
+
+    // Should not be possible when changing transport takes 1 min.
+    const path = Dijkstra.findShortestPath(t, `${stop1}:${0}`, stop3);
+    expect(path).toEqual([]);
+
+    const t2 = new TransportGraph();
+
+    t2.addTimeVertex(stop1);
+    t2.addTimeVertex(stop2);
+    t2.addTimeVertex(stop3);
+
+    t.addEdge(`${stop1}:${0}`, {to: `${stop2}:${1}`, transportation});
+    t.addEdge(`${stop2}:${2}`, {to: `${stop3}:${3}`, transportation});
+
+    const path2 = Dijkstra.findShortestPath(t, `${stop1}:${0}`, stop3);
+    expect(path2).toEqual(["1:0","2:1","2:2","3:3"]);
+});

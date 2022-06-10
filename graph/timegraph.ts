@@ -88,7 +88,7 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		this.times.addAndGetPosition(`${id}:${0}`);
 	}
 
-	override addVertex(id: Id) {
+	public override addVertex(id: Id): boolean {
 		const split = id.split(":");
 		const locationId = parseInt(split[0]!);
 		const timeStamp = parseInt(split[1]!);
@@ -113,7 +113,7 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		return true;
 	}
 
-	override addEdge(id: Id, edge: Edge) {
+	public override addEdge(id: Id, edge: Edge) {
 		if (!this.vertexExists(id)) {
 			this.addVertex(id);
 		}
@@ -123,6 +123,14 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		}
 
 		return super.addEdge(id, edge);
+	}
+
+	public override getNeighbors(vertex: `${number}:${number}`): Edge[] {
+		if (!this.vertexExists(vertex)) {
+			this.addVertex(vertex);
+		}
+		
+		return super.getNeighbors(vertex);
 	}
 
 	public static isSameVertexId(id: Id, number: number): boolean {
