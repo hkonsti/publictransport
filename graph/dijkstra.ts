@@ -4,8 +4,8 @@ import {Edge, TransportationType, TransportGraph} from "./transportgraph";
 import type {Id} from "./timegraph";
 
 interface Info {
-    pred: Edge | undefined;
-    distance: number;
+	pred: Edge | undefined;
+	distance: number;
 }
 
 type Path = Id[];
@@ -15,79 +15,79 @@ type Path = Id[];
  */
 export class Dijkstra {
 
-    static readonly MAXDEPTH = 15000;
-    static readonly CHANGE_LINES_TIME = 1; // Takes 1 min to hop off and on again at the same stop.
+	static readonly MAXDEPTH = 15000;
+	static readonly CHANGE_LINES_TIME = 1; // Takes 1 min to hop off and on again at the same stop.
 
-    static findShortestPath(g: TransportGraph, startId: Id, goalId: number, maxdepth = Dijkstra.MAXDEPTH): Path {
-        let currentDepth = 0;
+	static findShortestPath(g: TransportGraph, startId: Id, goalId: number, maxdepth = Dijkstra.MAXDEPTH): Path {
+		let currentDepth = 0;
 
-        const dict = new Map<Id, Info>();
-        const priority = new PriorityQueue<Edge>();
+		const dict = new Map<Id, Info>();
+		const priority = new PriorityQueue<Edge>();
 
-        dict.set(startId, {pred: undefined, distance: 0});
-        priority.insert(0, {to: startId, transportation: {name: "waiting", type: TransportationType.WAITING}});
+		dict.set(startId, {pred: undefined, distance: 0});
+		priority.insert(0, {to: startId, transportation: {name: "waiting", type: TransportationType.WAITING}});
 
-        while (currentDepth <= maxdepth && !priority.empty()) {
-            const current = priority.pop()!;
-            const neighbors = g.getNeighbors(current!.elem.to);
+		while (currentDepth <= maxdepth && !priority.empty()) {
+			const current = priority.pop()!;
+			const neighbors = g.getNeighbors(current!.elem.to);
 
-            for (let n of neighbors) {
-                /**
-                 * 4 Possible options:
-                 *  1. You are on a bus/train -> stay inside
-                 *  2. You are on a bus/train -> hop off
-                 *  3. You are at the stop -> keep waiting
-                 *  4. You are at the stop -> hop on something
-                 * 
-                 * Not possible: Hop off and immediately onto another bus. Waiting time necessary.
-                 */
+			for (let n of neighbors) {
+				/**
+				 * 4 Possible options:
+				 *  1. You are on a bus/train -> stay inside
+				 *  2. You are on a bus/train -> hop off
+				 *  3. You are at the stop -> keep waiting
+				 *  4. You are at the stop -> hop on something
+				 * 
+				 * Not possible: Hop off and immediately onto another bus. Waiting time necessary.
+				 */
 
-                const currentlyOnTransport = current.elem.transportation.type === TransportationType.TRANSPORT;
-                const stillOnTransport = n.transportation.type === TransportationType.TRANSPORT;
-                const sameTransportname = current.elem.transportation.name === n.transportation.name;
+				const currentlyOnTransport = current.elem.transportation.type === TransportationType.TRANSPORT;
+				const stillOnTransport = n.transportation.type === TransportationType.TRANSPORT;
+				const sameTransportname = current.elem.transportation.name === n.transportation.name;
 
-                if (currentlyOnTransport && stillOnTransport && !sameTransportname) {
-                    continue;
-                }
+				if (currentlyOnTransport && stillOnTransport && !sameTransportname) {
+					continue;
+				}
 
-                if (!dict.has(n.to)) {
-                    dict.set(n.to, {
-                        pred: current.elem,
-                        distance: TransportGraph.getTimeDifference(startId, n.to)
-                    });
-                    priority.insert(dict.get(n.to)!.distance, n)
-                }
+				if (!dict.has(n.to)) {
+					dict.set(n.to, {
+						pred: current.elem,
+						distance: TransportGraph.getTimeDifference(startId, n.to)
+					});
+					priority.insert(dict.get(n.to)!.distance, n)
+				}
 
-                if (TransportGraph.isSameVertexId(n.to, goalId)) {
+				if (TransportGraph.isSameVertexId(n.to, goalId)) {
 
-                    // Reached goal
-                    return Dijkstra.traceRoute(n.to, dict);
-                }
-            }
-            currentDepth++;
-        }
+					// Reached goal
+					return Dijkstra.traceRoute(n.to, dict);
+				}
+			}
+			currentDepth++;
+		}
 
-        if (currentDepth > maxdepth) {
-            throw new Error("Max depth exceeded. Couldn't find a route.");
-        }
+		if (currentDepth > maxdepth) {
+			throw new Error("Max depth exceeded. Couldn't find a route.");
+		}
 
-        return [];
-    }
+		return [];
+	}
 
-    public static traceRoute(res: Id, dict: Map<Id, Info>) {
-        const path: Path = [];
-        let curr = res
+	public static traceRoute(res: Id, dict: Map<Id, Info>) {
+		const path: Path = [];
+		let curr = res
 
-        while (true) {
-            path.unshift(curr);
-            const pred = dict.get(curr)!.pred;
-            if (!pred) {
-                break;
-            }
-            curr = pred.to;
-        }
+		while (true) {
+			path.unshift(curr);
+			const pred = dict.get(curr)!.pred;
+			if (!pred) {
+				break;
+			}
+			curr = pred.to;
+		}
 
-        return path;
-    }
+		return path;
+	}
 
 }
