@@ -1,3 +1,4 @@
+import * as fs from "fs";
 
 export class PointTo<T> {
 	to: T;
@@ -127,5 +128,34 @@ export class Graph<Vertex, Edge extends PointTo<Vertex>> {
 		}
 
 		return this.edges.getNeighbors(vertex);
+	}
+
+	/* istanbul ignore next */
+	public async dumpToGraphML(path: string) {
+		const header = `<?xml version="1.0" encoding="UTF-8"?>
+		<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+			 http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+		  <graph id="G" edgedefault="directed">`
+
+		const footer = `</graph></graphml>`
+
+		let body = "";
+
+		for (const vertex of this.verticies.keys()) {
+			body += `<node id="${vertex}" />`;
+		}
+
+		let id = 0;
+		for (const vertex of this.verticies.keys()) {
+			const neighbors = this.getNeighbors(vertex);
+			for (const n of neighbors) {
+				body += `<edge id="${id}" source="${vertex}" target="${n.to}" />`;
+				id++;
+			}
+		}
+
+		await fs.promises.writeFile(path, (header+body+footer));
 	}
 }

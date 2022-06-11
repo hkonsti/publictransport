@@ -62,9 +62,12 @@ test("Test Dijkstra's algorithm with hopping on/ off rules", () => {
 	t.addTimeVertex(stop2);
 	t.addTimeVertex(stop3);
 
-	const transportation = {name: "Bus1", type: TransportationType.TRANSPORT};
-	t.addEdge(`${stop1}:${0}`, {to: `${stop2}:${1}`, transportation});
-	t.addEdge(`${stop2}:${1}`, {to: `${stop3}:${2}`, transportation});
+	const transportation = [
+		{name: "Bus1", type: TransportationType.TRANSPORT},
+		{name: "Bus2", type: TransportationType.TRANSPORT},
+	] as const;
+	t.addEdge(`${stop1}:${0}`, {to: `${stop2}:${1}`, transportation: transportation[0]});
+	t.addEdge(`${stop2}:${1}`, {to: `${stop3}:${2}`, transportation: transportation[1]});
 
 	// Should not be possible when changing transport takes 1 min.
 	const path = Dijkstra.findShortestPath(t, `${stop1}:${0}`, stop3);
@@ -76,8 +79,8 @@ test("Test Dijkstra's algorithm with hopping on/ off rules", () => {
 	t2.addTimeVertex(stop2);
 	t2.addTimeVertex(stop3);
 
-	t.addEdge(`${stop1}:${0}`, {to: `${stop2}:${1}`, transportation});
-	t.addEdge(`${stop2}:${2}`, {to: `${stop3}:${3}`, transportation});
+	t.addEdge(`${stop1}:${0}`, {to: `${stop2}:${1}`, transportation: transportation[0]});
+	t.addEdge(`${stop2}:${2}`, {to: `${stop3}:${3}`, transportation: transportation[1]});
 
 	const path2 = Dijkstra.findShortestPath(t, `${stop1}:${0}`, stop3);
 	expect(path2).toEqual(["1:0","2:1","2:2","3:3"]);

@@ -16,7 +16,6 @@ type Path = Id[];
 export class Dijkstra {
 
 	static readonly MAXDEPTH = 15000;
-	static readonly CHANGE_LINES_TIME = 1; // Takes 1 min to hop off and on again at the same stop.
 
 	static findShortestPath(g: TransportGraph, startId: Id, goalId: number, maxdepth = Dijkstra.MAXDEPTH): Path {
 		let currentDepth = 0;
