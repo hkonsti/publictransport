@@ -91,7 +91,10 @@ export class DataStore {
 			for (let i = 0; i < service.calendar.length; i++) {
 				if (service.calendar[i]) {
 					const fromTime = TimeConverter.convert(i, before.departure);
-					const toTime = TimeConverter.convert(i, stopTime.departure); // TODO: what if this is after midnight
+					let toTime = TimeConverter.convert(i, stopTime.departure);
+					if (toTime < fromTime) {
+						toTime = TimeConverter.convert(i+1, stopTime.departure);
+					}
 
 					const fromVertex: Id = `${before.stopId}:${fromTime}`;
 					const toVertex: Id = `${stopTime.stopId}:${toTime}`;
