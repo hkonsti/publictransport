@@ -1,5 +1,9 @@
 import * as fs from "fs";
 
+/**
+ * PointTo objects point to other objects and can be extended to hold more information.
+ * Used in the adjacency lists of the Graph class.
+ */
 export class PointTo<T> {
 	to: T;
 
@@ -21,8 +25,10 @@ export class PointTo<T> {
 }
 
 /**
- * There is a lot of optimization possible by keeping the id lists sorted.
- * Not going to bother for now though as the number of neighbors is likely to remain very small.
+ * Edges is a data store for adjacency lists used in the Graph class.
+ * 
+ * There is a lot of optimization possible by keeping the lists sorted.
+ * For now it wasn't worth the effort as nodes in transportation graphs have only very few neighbors.
  */
 class Edges<Vertex, Edge extends PointTo<Vertex>> {
 

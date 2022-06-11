@@ -1,8 +1,47 @@
 import {Graph, PointTo} from "./graph";
 
-// Fromat:   	 locationId: timeStamp
+/**
+ * TimeGraph represents a graph that has multiple vertices for one
+ * location, representing different positions in time.
+ * 
+ * For example could there be vertices for a location at 6:00, 6:03,
+ * 6:10, ...
+ * 
+ * Vertices for one location are always connected to themselves in the
+ * future to represent waiting at that location until movement is 
+ * possible again.
+ * 
+ * Location A
+ * 5:55 -> 6:11 -> 6:30 -> ... -> 5:55
+ *			^
+ * 			|
+ * 6:00 -> 6:03 -> 6:10 -> ... -> 6:00
+ * Location B
+ * 
+ * The above graph shows two locations with the possibility of leaving B at 
+ * 6:03 and arriving at A at 6:11.
+ * 
+ * For simplification, in this graph, time is a closed loop and the last 
+ * timestep of each location connects to the first one.
+ *
+ * Creating Location C and adding 1:10.
+ *  ┍> 0:00 ┑     ┍> 0:00  -> 1:10 ┑
+ * 	|       | ->  |                |
+ *  ┕-------┚     ┕----------------┚
+ */
+
+
+/**
+ * Vertex Id Format:
+ * 
+ * locationId:timeStamp
+ */
 export type Id = `${number}:${number}`
 
+/**
+ * Tracks which times already exist for a location. Returns times left and right 
+ * so the waiting edges can be connected accordingly.
+ */
 class Times {
 
 	// Maps from location id to time stamps.
@@ -54,23 +93,15 @@ class Times {
 	}
 }
 
-/**
- * TimeGraph represents a graph that has multiple vertices for one
- * location, representing different positions in time.
- * 
- * For example would there be vertices for bus stop A at 6:00, 6:01,
- * 6:02, ...
- * 
- * Vertices for one location are always connected to the one in the
- * next minute to represent waiting at that location for one minute.
- */
 export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
+	/**
+	 * How many time steps does the closed time loop have.
+	 */
 	private timeSteps: number;
 	private createWaitingEdge: (id: Id) => Edge;
 
 	/**
 	 *  Tracks which times have been created for which locations.
-	 * 	Array is sorted.
 	 */
 	private times: Times;
 
@@ -82,12 +113,22 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		this.times = new Times();
 	}
 
+	/**
+	 * Adds a vertex at the zero time step and connects it to ifself 
+	 * using a waiting edge.
+	 * @param id 
+	 */
 	addTimeVertex(id: number) {
 		super.addVertex(`${id}:${0}`);
 		this.addEdge(`${id}:${0}`, this.createWaitingEdge(`${id}:${0}`));
 		this.times.addAndGetPosition(`${id}:${0}`);
 	}
 
+	/**
+	 * Can only add new times for already existing locations.
+	 * @param id - Contains location id and time.
+	 * @returns True of successful.
+	 */
 	public override addVertex(id: Id): boolean {
 		const split = id.split(":");
 		const locationId = parseInt(split[0]!);
@@ -113,6 +154,16 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		return true;
 	}
 
+	/**
+	 * Creates an edge between two vertices. If vertices
+	 * for the two specific times don't exist yet, they 
+	 * are created. 
+	 * 
+	 * The location needs to already exist in the graph.
+	 * @param id 
+	 * @param edge 
+	 * @returns 
+	 */
 	public override addEdge(id: Id, edge: Edge) {
 		if (!this.vertexExists(id)) {
 			this.addVertex(id);
@@ -125,6 +176,14 @@ export class TimeGraph<Edge extends PointTo<Id>> extends Graph<Id, Edge> {
 		return super.addEdge(id, edge);
 	}
 
+	/**
+	 * Returns neighbors of a vertex.
+	 * If the specific time doesn't exist yet, it is created.
+	 * 
+	 * The location needs to already exist in the graph.
+	 * @param vertex 
+	 * @returns 
+	 */
 	public override getNeighbors(vertex: `${number}:${number}`): Edge[] {
 		if (!this.vertexExists(vertex)) {
 			this.addVertex(vertex);

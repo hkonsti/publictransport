@@ -31,6 +31,7 @@ export class Dijkstra {
 			const neighbors = g.getNeighbors(current!.elem.to);
 
 			for (let n of neighbors) {
+
 				/**
 				 * 4 Possible options:
 				 *  1. You are on a bus/train -> stay inside
@@ -38,9 +39,8 @@ export class Dijkstra {
 				 *  3. You are at the stop -> keep waiting
 				 *  4. You are at the stop -> hop on something
 				 * 
-				 * Not possible: Hop off and immediately onto another bus. Waiting time necessary.
+				 * Not possible: Hop off and immediately onto another bus. Skip iteration in that case.
 				 */
-
 				const currentlyOnTransport = current.elem.transportation.type === TransportationType.TRANSPORT;
 				const stillOnTransport = n.transportation.type === TransportationType.TRANSPORT;
 				const sameTransportname = current.elem.transportation.name === n.transportation.name;

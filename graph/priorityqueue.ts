@@ -6,14 +6,14 @@ interface PriorityQueueElem<T> {
 /**
  * Priority Queue where lower number equals to higher priority.
  * 
- * We could use a Heap here for potential speed up.
+ * For potential speedup, a heap could be used here.
  */
 export class PriorityQueue<T> {
 
 	private list: PriorityQueueElem<T>[] = [];
 
 	insert(priority: number, elem: T) {
-		// Slow linear search for insert.
+		// Binary search could be used here for faster inserts.
 		let inserted = false
 		let i = 0;
 		while (i <= this.list.length && !inserted) {

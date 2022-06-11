@@ -16,6 +16,9 @@ export interface Edge extends PointTo<Id> {
 	transportation: Transportation;
 }
 
+/**
+ * Expands a time graph to model public transport data.
+ */
 export class TransportGraph extends TimeGraph<Edge> {
 
 	private static waiting: Transportation = {name: "waiting", type: TransportationType.WAITING};
