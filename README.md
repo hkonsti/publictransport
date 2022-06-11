@@ -1,7 +1,7 @@
 # Public Transport
 
 ![Visualization of graph created with ./data data](./graph.jpeg)
-*Visualization of the graph created by this program using transit data from ./data*
+*Visualization of a graph exported from this program using transit data from ./data*
 
 This project can find public transport connections from one stop to another, reading the timetable data from any GTFS archive. It is implemented in under 1k lines of code with zero dependencies (besides Typescript and Jest for testing).
 

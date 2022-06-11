@@ -8,7 +8,7 @@
 		"dev": "ts-node cmd/main.ts",
 		"test": "jest --coverage -i"
 	},
-	"author": "hkonsti",
+	"author": "github.com/hkonsti",
 	"devDependencies": {
 		"@types/jest": "^28.1.1",
 		"jest": "^28.1.1",
