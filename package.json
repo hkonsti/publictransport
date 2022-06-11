@@ -3,11 +3,12 @@
 	"version": "1.0.0",
 	"description": "Finding public transport connections with graphs",
 	"main": "index.js",
+	"license": "MIT License",
 	"scripts": {
 		"dev": "ts-node cmd/main.ts",
 		"test": "jest --coverage -i"
 	},
-	"author": "Konstantin Hohr",
+	"author": "hkonsti",
 	"devDependencies": {
 		"@types/jest": "^28.1.1",
 		"jest": "^28.1.1",
